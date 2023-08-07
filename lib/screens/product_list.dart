@@ -36,22 +36,7 @@ class _ProductListState extends State<StatefulWidget> {
         title: const Text('Product List'),
       ),
       body: buildProductList(),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FloatingActionButton(
-            onPressed: () => naviProductAdd(),
-            tooltip: 'Add New Product',
-            child: const Icon(Icons.add),
-          ),
-          const SizedBox(width: 60.0),
-          FloatingActionButton(
-            onPressed: () => naviProductEdit(),
-            tooltip: 'Edit Product',
-            child: const Icon(Icons.edit),
-          ),
-        ],
-      ),
+      floatingActionButton: buildButtons(),
     );
   }
 
@@ -112,6 +97,25 @@ class _ProductListState extends State<StatefulWidget> {
                 );
         },
       ),
+    );
+  }
+
+  Row buildButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FloatingActionButton(
+          onPressed: () => naviProductAdd(),
+          tooltip: 'Add New Product',
+          child: const Icon(Icons.add),
+        ),
+        const SizedBox(width: 60.0),
+        FloatingActionButton(
+          onPressed: () => naviProductEdit(),
+          tooltip: 'Edit Product',
+          child: const Icon(Icons.edit),
+        ),
+      ],
     );
   }
 

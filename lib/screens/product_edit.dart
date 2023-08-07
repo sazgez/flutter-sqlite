@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_demo/validations/product_validator.dart';
 import '../data/database_helper.dart';
 import '../models/product.dart';
 
@@ -11,27 +12,31 @@ class ProductEdit extends StatefulWidget {
   State<ProductEdit> createState() => _ProductEditState();
 }
 
-class _ProductEditState extends State<ProductEdit> {
+class _ProductEditState extends State<ProductEdit> with ProductValidation {
   var dbHelper = DatabaseHelper();
-  var nameController = TextEditingController();
-  var descriptionController = TextEditingController();
-  var unitPriceController = TextEditingController();
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Product'),
+        actions: [
+          const PopupMenuItem(
+            child: Icon(Icons.info_outline),
+          ),
+        ],
       ),
       body: Container(
         margin: const EdgeInsets.all(20.0),
         child: Form(
+          key: formKey,
           child: Column(
             children: [
-              buildNameField(),
-              buildDescriptionField(),
-              buildUnitPriceField(),
-              buildUpdateButton(),
+              nameFormField(),
+              descriptionFormField(),
+              unitPriceFormField(),
+              updateButton(),
             ],
           ),
         ),
@@ -39,56 +44,64 @@ class _ProductEditState extends State<ProductEdit> {
     );
   }
 
-  TextField buildNameField() {
-    return TextField(
+  TextFormField nameFormField() {
+    return TextFormField(
+      initialValue: widget.selectedProduct.name,
       decoration: InputDecoration(
         labelText: 'Product Name',
         hintText: widget.selectedProduct.name,
       ),
-      controller: nameController,
+      validator: validateName,
+      onSaved: (value) {
+        widget.selectedProduct.name = value!;
+      },
     );
   }
 
-  TextField buildDescriptionField() {
-    return TextField(
+  TextFormField descriptionFormField() {
+    return TextFormField(
+      initialValue: widget.selectedProduct.description,
       decoration: InputDecoration(
         labelText: 'Product Description',
         hintText: widget.selectedProduct.description,
       ),
-      controller: descriptionController,
+      validator: validateDescription,
+      onSaved: (value) {
+        widget.selectedProduct.description = value!;
+      },
     );
   }
 
-  TextField buildUnitPriceField() {
-    return TextField(
+  TextFormField unitPriceFormField() {
+    return TextFormField(
+      initialValue: widget.selectedProduct.unitPrice.toString(),
       decoration: InputDecoration(
         labelText: 'Product Unit Price',
         hintText: widget.selectedProduct.unitPrice.toString(),
       ),
-      controller: unitPriceController,
+      validator: validateUnitPrice,
+      onSaved: (value) {
+        widget.selectedProduct.unitPrice = double.parse(value!);
+      },
     );
   }
 
-  TextButton buildUpdateButton() {
+  TextButton updateButton() {
     return TextButton(
       onPressed: () {
-        editProduct();
-        Navigator.pop(context);
+        if (formKey.currentState!.validate()) {
+          formKey.currentState?.save();
+          editProduct();
+          Navigator.pop(context);
+        }
       },
       child: const Text('Update'),
     );
   }
 
   void editProduct() async {
-    if (nameController.text.isNotEmpty &&
-        descriptionController.text.isNotEmpty &&
-        unitPriceController.text.isNotEmpty) {
-      widget.selectedProduct.name = nameController.text;
-      widget.selectedProduct.description = descriptionController.text;
-      widget.selectedProduct.unitPrice = double.parse(unitPriceController.text);
-      await dbHelper.update(
-        widget.selectedProduct,
-      );
-    }
+    await dbHelper.update(
+      widget.selectedProduct,
+    );
   }
 }
