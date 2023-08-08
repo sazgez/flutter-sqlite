@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite_demo/data/database_helper.dart';
 import 'package:sqflite_demo/models/product.dart';
+import 'package:sqflite_demo/utilities/infoMenuItem.dart';
 
 class ProductAdd extends StatefulWidget {
   const ProductAdd({super.key});
@@ -20,43 +21,46 @@ class _ProductAddState extends State<StatefulWidget> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add New Product'),
+        actions: [
+          infoButton(context: context),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(
           children: [
-            buildNameField(),
-            buildDescriptionField(),
-            buildUnitPriceField(),
-            buildSaveButton(),
+            nameField(),
+            descriptionField(),
+            unitPriceField(),
+            saveButton(),
           ],
         ),
       ),
     );
   }
 
-  TextField buildNameField() {
+  TextField nameField() {
     return TextField(
       decoration: const InputDecoration(labelText: 'Product Name'),
       controller: nameController,
     );
   }
 
-  TextField buildDescriptionField() {
+  TextField descriptionField() {
     return TextField(
       decoration: const InputDecoration(labelText: 'Product Description'),
       controller: descriptionController,
     );
   }
 
-  TextField buildUnitPriceField() {
+  TextField unitPriceField() {
     return TextField(
       decoration: const InputDecoration(labelText: 'Product Unit Price'),
       controller: unitPriceController,
     );
   }
 
-  buildSaveButton() {
+  saveButton() {
     return TextButton(
       child: const Text('Save'),
       onPressed: () {

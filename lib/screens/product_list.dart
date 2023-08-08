@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite_demo/data/database_helper.dart';
 import 'package:sqflite_demo/screens/product_add.dart';
-import 'package:sqflite_demo/screens/product_edit.dart';
+import 'package:sqflite_demo/screens/product_details.dart';
 import '../models/product.dart';
 
 class ProductList extends StatefulWidget {
@@ -77,19 +77,6 @@ class _ProductListState extends State<StatefulWidget> {
                               }
                             });
                           },
-                          onLongPress: () {
-                            setState(() {
-                              dbHelper.delete(product.id);
-                              selectedProduct = null;
-                            });
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: Text(product.name),
-                                content: const Text('Deleted'),
-                              ),
-                            );
-                          },
                         ),
                       ),
                     );
@@ -102,17 +89,16 @@ class _ProductListState extends State<StatefulWidget> {
 
   Row buildButtons() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         FloatingActionButton(
           onPressed: () => naviProductAdd(),
           tooltip: 'Add New Product',
           child: const Icon(Icons.add),
         ),
-        const SizedBox(width: 60.0),
         FloatingActionButton(
-          onPressed: () => naviProductEdit(),
-          tooltip: 'Edit Product',
+          onPressed: () => naviProductDetails(),
+          tooltip: 'Product Details',
           child: const Icon(Icons.edit),
         ),
       ],
@@ -130,13 +116,13 @@ class _ProductListState extends State<StatefulWidget> {
     });
   }
 
-  void naviProductEdit() async {
+  void naviProductDetails() async {
     selectedProduct != null
         ? await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  ProductEdit(selectedProduct: selectedProduct!),
+                  ProductDetails(selectedProduct: selectedProduct!),
             ),
           ).then((_) {
             _refreshData();
