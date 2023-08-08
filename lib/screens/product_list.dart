@@ -92,11 +92,13 @@ class _ProductListState extends State<StatefulWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         FloatingActionButton(
+          heroTag: 'Add Button',
           onPressed: () => naviProductAdd(),
           tooltip: 'Add New Product',
           child: const Icon(Icons.add),
         ),
         FloatingActionButton(
+          heroTag: 'Details Button',
           onPressed: () => naviProductDetails(),
           tooltip: 'Product Details',
           child: const Icon(Icons.edit),

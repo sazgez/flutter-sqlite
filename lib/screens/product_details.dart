@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite_demo/enums/menu_button.dart';
-import 'package:sqflite_demo/utilities/infoMenuItem.dart';
 import '../data/database_helper.dart';
 import '../models/product.dart';
 
@@ -52,7 +51,6 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   List<Widget> buildAppBarButtons() {
     return [
-      infoButton(context: context),
       PopupMenuButton<Options>(
         onSelected: menuOptions,
         itemBuilder: (context) => <PopupMenuEntry<Options>>[
@@ -95,8 +93,16 @@ class _ProductDetailsState extends State<ProductDetails> {
         if (nameController.text.isNotEmpty &&
             descriptionController.text.isNotEmpty &&
             unitPriceController.text.isNotEmpty) {
-          editProduct();
+          updateProduct();
           Navigator.pop(context);
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => const AlertDialog(
+              title: Text('Warning'),
+              content: Text('Be sure whether all the blanks are filled.'),
+            ),
+          );
         }
         break;
       case Options.delete:
@@ -136,7 +142,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  void editProduct() async {
+  void updateProduct() async {
     // set changes
     widget.selectedProduct.name = nameController.text;
     widget.selectedProduct.description = descriptionController.text;

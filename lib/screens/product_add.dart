@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite_demo/data/database_helper.dart';
 import 'package:sqflite_demo/models/product.dart';
-import 'package:sqflite_demo/utilities/infoMenuItem.dart';
 
 class ProductAdd extends StatefulWidget {
   const ProductAdd({super.key});
@@ -21,9 +20,6 @@ class _ProductAddState extends State<StatefulWidget> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add New Product'),
-        actions: [
-          infoButton(context: context),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
