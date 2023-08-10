@@ -21,6 +21,10 @@ class DatabaseHelper {
     );
   }
 
+  Future close() async {
+    await _database?.close();
+  }
+
   Future _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE products(

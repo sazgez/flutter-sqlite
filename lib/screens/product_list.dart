@@ -30,6 +30,12 @@ class _ProductListState extends State<StatefulWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    dbHelper.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

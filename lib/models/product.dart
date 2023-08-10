@@ -18,12 +18,6 @@ class Product {
     required this.unitPrice,
   });
 
-  Product.update({
-    required this.name,
-    required this.description,
-    required this.unitPrice,
-  });
-
   factory Product.fromMap(Map<String, dynamic> map) => Product.override(
         id: map['id'],
         name: map['name'],
