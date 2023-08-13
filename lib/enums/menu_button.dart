@@ -1,4 +1,0 @@
-enum Options {
-  update,
-  delete,
-}
