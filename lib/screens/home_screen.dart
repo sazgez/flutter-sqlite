@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:sqflite_demo/data/data.dart';
+import 'package:sqflite_demo/utils/task_categories.dart';
 import 'package:sqflite_demo/utils/utils.dart';
 import 'package:sqflite_demo/widgets/widgets.dart';
 
@@ -50,7 +52,24 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const DisplayListOfTasks(
-                      tasks: [],
+                      tasks: [
+                        Task(
+                          title: 'title 1',
+                          note: 'note',
+                          time: '11:12',
+                          date: 'Aug, 14',
+                          category: TaskCategories.education,
+                          isCompleted: false,
+                        ),
+                        Task(
+                          title: 'title 2',
+                          note: 'note',
+                          time: '11:46',
+                          date: 'Aug, 14',
+                          category: TaskCategories.health,
+                          isCompleted: false,
+                        ),
+                      ],
                     ),
                     const Gap(20),
                     Text(
@@ -59,7 +78,24 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const Gap(20),
                     const DisplayListOfTasks(
-                      tasks: [],
+                      tasks: [
+                        Task(
+                          title: 'title 3',
+                          note: 'note',
+                          time: '11:54',
+                          date: 'Aug, 14',
+                          category: TaskCategories.others,
+                          isCompleted: true,
+                        ),
+                        Task(
+                          title: 'title 2',
+                          note: 'note',
+                          time: '11:55',
+                          date: 'Aug, 14',
+                          category: TaskCategories.personal,
+                          isCompleted: true,
+                        ),
+                      ],
                       isCompletedTasks: true,
                     ),
                     const Gap(20),

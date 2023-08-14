@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite_demo/utils/extensions.dart';
+import 'package:sqflite_demo/widgets/task_tile.dart';
 import '../data/models/task.dart';
 import 'common_container.dart';
 
@@ -31,12 +32,18 @@ class DisplayListOfTasks extends StatelessWidget {
                 style: context.textTheme.headlineSmall,
               ),
             )
-          : ListView.builder(
+          : ListView.separated(
               shrinkWrap: true,
               padding: EdgeInsets.zero,
               itemCount: tasks.length,
               itemBuilder: (context, index) {
-                return const Text('Home');
+                final task = tasks[index];
+                return TaskTile(task: task);
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const Divider(
+                  thickness: 1.5,
+                );
               },
             ),
     );
