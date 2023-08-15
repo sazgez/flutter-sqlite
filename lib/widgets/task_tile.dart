@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sqflite_demo/data/data.dart';
 import 'package:sqflite_demo/utils/extensions.dart';
+import 'package:sqflite_demo/widgets/widgets.dart';
 
 class TaskTile extends StatelessWidget {
   const TaskTile({super.key, required this.task, this.onCompleted});
@@ -27,16 +28,8 @@ class TaskTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(9.0),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: task.category.color.withOpacity(backgroundOpacity),
-              border: Border.all(
-                width: 2,
-                color: task.category.color.withOpacity(iconOpacity),
-              ),
-            ),
+          CircleContainer(
+            color: task.category.color.withOpacity(backgroundOpacity),
             child: Center(
               child: Icon(
                 task.category.icon,

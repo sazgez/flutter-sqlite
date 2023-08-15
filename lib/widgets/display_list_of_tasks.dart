@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite_demo/utils/extensions.dart';
+import 'package:sqflite_demo/widgets/task_details.dart';
 import 'package:sqflite_demo/widgets/task_tile.dart';
 import '../data/models/task.dart';
 import 'common_container.dart';
@@ -38,7 +39,21 @@ class DisplayListOfTasks extends StatelessWidget {
               itemCount: tasks.length,
               itemBuilder: (context, index) {
                 final task = tasks[index];
-                return TaskTile(task: task);
+                return InkWell(
+                  onLongPress: () {
+                    // TODO-Delete TASK
+                  },
+                  onTap: () async {
+                    // TODO-show task details
+                    await showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return TaskDetails(task: task);
+                      },
+                    );
+                  },
+                  child: TaskTile(task: task),
+                );
               },
               separatorBuilder: (BuildContext context, int index) {
                 return const Divider(
