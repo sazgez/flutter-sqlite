@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sqflite_demo/config/routes/route_location.dart';
 import 'package:sqflite_demo/data/data.dart';
 import 'package:sqflite_demo/utils/task_categories.dart';
 import 'package:sqflite_demo/utils/utils.dart';
@@ -7,6 +9,9 @@ import 'package:sqflite_demo/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  static HomeScreen builder(BuildContext context, GoRouterState state) =>
+      const HomeScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +105,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const Gap(20),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => context.push(RouteLocation.createTask),
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: DisplayWhiteText(text: 'Add New Task'),
