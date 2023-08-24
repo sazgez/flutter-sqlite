@@ -2,21 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sqflite_demo/config/routes/route_location.dart';
-import 'package:sqflite_demo/data/data.dart';
-import 'package:sqflite_demo/utils/task_categories.dart';
+import 'package:sqflite_demo/data/models/task.dart';
+import 'package:sqflite_demo/providers/providers.dart';
 import 'package:sqflite_demo/utils/utils.dart';
 import 'package:sqflite_demo/widgets/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   static HomeScreen builder(BuildContext context, GoRouterState state) =>
       const HomeScreen();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colors = context.colorScheme;
     final deviceSize = context.deviceSize;
+    final taskState = ref.watch(taskProvider);
+    final completedTasks = _completedTasks(taskState.tasks);
+    final uncompletedTasks = _uncompletedTasks(taskState.tasks);
 
     return Scaffold(
       body: Stack(
@@ -56,25 +60,8 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const DisplayListOfTasks(
-                      tasks: [
-                        Task(
-                          title: 'title 1',
-                          note: '',
-                          time: '11:12',
-                          date: 'Aug, 14',
-                          category: TaskCategories.education,
-                          isCompleted: false,
-                        ),
-                        Task(
-                          title: 'title 2',
-                          note: 'note',
-                          time: '11:46',
-                          date: 'Aug, 14',
-                          category: TaskCategories.health,
-                          isCompleted: false,
-                        ),
-                      ],
+                    DisplayListOfTasks(
+                      tasks: uncompletedTasks,
                     ),
                     const Gap(20),
                     Text(
@@ -82,25 +69,8 @@ class HomeScreen extends StatelessWidget {
                       style: context.textTheme.headlineMedium,
                     ),
                     const Gap(20),
-                    const DisplayListOfTasks(
-                      tasks: [
-                        Task(
-                          title: 'title 3',
-                          note: '',
-                          time: '11:54',
-                          date: 'Aug, 14',
-                          category: TaskCategories.others,
-                          isCompleted: true,
-                        ),
-                        Task(
-                          title: 'title 2',
-                          note: 'note',
-                          time: '11:55',
-                          date: 'Aug, 14',
-                          category: TaskCategories.personal,
-                          isCompleted: true,
-                        ),
-                      ],
+                    DisplayListOfTasks(
+                      tasks: completedTasks,
                       isCompletedTasks: true,
                     ),
                     const Gap(20),
@@ -119,5 +89,25 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  List<Task> _completedTasks(List<Task> tasks) {
+    final List<Task> filteredTasks = [];
+    for (var task in tasks) {
+      if (task.isCompleted) {
+        filteredTasks.add(task);
+      }
+    }
+    return filteredTasks;
+  }
+
+  List<Task> _uncompletedTasks(List<Task> tasks) {
+    final List<Task> filteredTasks = [];
+    for (var task in tasks) {
+      if (!task.isCompleted) {
+        filteredTasks.add(task);
+      }
+    }
+    return filteredTasks;
   }
 }
