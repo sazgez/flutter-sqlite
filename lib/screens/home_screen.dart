@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:sqflite_demo/config/routes/route_location.dart';
 import 'package:sqflite_demo/data/models/task.dart';
 import 'package:sqflite_demo/providers/providers.dart';
@@ -19,8 +20,9 @@ class HomeScreen extends ConsumerWidget {
     final colors = context.colorScheme;
     final deviceSize = context.deviceSize;
     final taskState = ref.watch(taskProvider);
-    final completedTasks = _completedTasks(taskState.tasks);
-    final uncompletedTasks = _uncompletedTasks(taskState.tasks);
+    final completedTasks = _completedTasks(taskState.tasks, ref);
+    final uncompletedTasks = _uncompletedTasks(taskState.tasks, ref);
+    final selectedDate = ref.watch(dateProvider);
 
     return Scaffold(
       body: Stack(
@@ -31,16 +33,19 @@ class HomeScreen extends ConsumerWidget {
                 height: deviceSize.height * 0.3,
                 width: deviceSize.width,
                 color: colors.primary,
-                child: const Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    DisplayWhiteText(
-                      text: 'Aug 13, 2023',
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
+                    InkWell(
+                      onTap: () => Helpers.selectDate(context, ref),
+                      child: DisplayWhiteText(
+                        text: DateFormat.yMMMd().format(selectedDate),
+                        fontSize: 20,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
-                    Gap(10),
-                    DisplayWhiteText(
+                    const Gap(10),
+                    const DisplayWhiteText(
                       text: 'My Todo List',
                       fontSize: 40,
                     ),
@@ -91,20 +96,26 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  List<Task> _completedTasks(List<Task> tasks) {
+  List<Task> _completedTasks(List<Task> tasks, WidgetRef ref) {
+    final selectedDate = ref.watch(dateProvider);
     final List<Task> filteredTasks = [];
+
     for (var task in tasks) {
-      if (task.isCompleted) {
+      final isTaskDay = Helpers.isTaskFromSelectedDate(task, selectedDate);
+      if (task.isCompleted && isTaskDay) {
         filteredTasks.add(task);
       }
     }
     return filteredTasks;
   }
 
-  List<Task> _uncompletedTasks(List<Task> tasks) {
+  List<Task> _uncompletedTasks(List<Task> tasks, WidgetRef ref) {
+    final selectedDate = ref.watch(dateProvider);
     final List<Task> filteredTasks = [];
+
     for (var task in tasks) {
-      if (!task.isCompleted) {
+      final isTaskDay = Helpers.isTaskFromSelectedDate(task, selectedDate);
+      if (!task.isCompleted && isTaskDay) {
         filteredTasks.add(task);
       }
     }

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:sqflite_demo/utils/utils.dart';
-import '../../utils/task_categories.dart';
 
 class Task extends Equatable {
   final int? id;
